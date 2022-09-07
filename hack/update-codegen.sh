@@ -28,6 +28,6 @@ CODEGEN_PKG=${CODEGEN_PKG:-$(cd "${SCRIPT_ROOT}"; ls -d -1 ./vendor/k8s.io/code-
 #
 bash "${CODEGEN_PKG}"/generate-groups.sh "deepcopy,client,informer,lister" \
   github.com/diktyo-io/networktopology-api/pkg/generated github.com/diktyo-io/networktopology-api/pkg/apis \
-  appgroup:v1alpha1 \
+  networktopology:v1alpha1 \
   --output-base "$(dirname "${BASH_SOURCE[0]}")/../../.." \
   --go-header-file "${SCRIPT_ROOT}"/hack/boilerplate.go.txt
