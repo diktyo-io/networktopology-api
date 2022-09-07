@@ -23,9 +23,8 @@ const (
 )
 
 // +genclient
-// +genclient:nonNamespaced
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:scope=Cluster,shortName=ag
+// +kubebuilder:resource:scope=Cluster,shortName=nt
 
 // NetworkTopology defines network costs in the cluster between regions and zones
 type NetworkTopology struct {
@@ -138,6 +137,6 @@ type NetworkTopologyList struct {
 	// +optional
 	metav1.ListMeta `json:"metadata,omitempty"`
 
-	// Items is the list of AppGroup
+	// Items is the list of NetworkTopology
 	Items []NetworkTopology `json:"items"`
 }
