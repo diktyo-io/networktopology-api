@@ -64,13 +64,13 @@ func NewFilteredNetworkTopologyInformer(client versioned.Interface, namespace st
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.DiktyoV1alpha1().NetworkTopologies(namespace).List(context.TODO(), options)
+				return client.NetworktopologyV1alpha1().NetworkTopologies(namespace).List(context.TODO(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.DiktyoV1alpha1().NetworkTopologies(namespace).Watch(context.TODO(), options)
+				return client.NetworktopologyV1alpha1().NetworkTopologies(namespace).Watch(context.TODO(), options)
 			},
 		},
 		&networktopologyv1alpha1.NetworkTopology{},

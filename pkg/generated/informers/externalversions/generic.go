@@ -54,9 +54,9 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=diktyo.k8s.io, Version=v1alpha1
+	// Group=networktopology.diktyo.k8s.io, Version=v1alpha1
 	case v1alpha1.SchemeGroupVersion.WithResource("networktopologies"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Diktyo().V1alpha1().NetworkTopologies().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Networktopology().V1alpha1().NetworkTopologies().Informer()}, nil
 
 	}
 

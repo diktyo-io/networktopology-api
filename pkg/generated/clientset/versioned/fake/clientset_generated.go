@@ -22,8 +22,8 @@ package fake
 
 import (
 	clientset "github.com/diktyo-io/networktopology-api/pkg/generated/clientset/versioned"
-	diktyov1alpha1 "github.com/diktyo-io/networktopology-api/pkg/generated/clientset/versioned/typed/networktopology/v1alpha1"
-	fakediktyov1alpha1 "github.com/diktyo-io/networktopology-api/pkg/generated/clientset/versioned/typed/networktopology/v1alpha1/fake"
+	networktopologyv1alpha1 "github.com/diktyo-io/networktopology-api/pkg/generated/clientset/versioned/typed/networktopology/v1alpha1"
+	fakenetworktopologyv1alpha1 "github.com/diktyo-io/networktopology-api/pkg/generated/clientset/versioned/typed/networktopology/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -81,7 +81,7 @@ var (
 	_ testing.FakeClient  = &Clientset{}
 )
 
-// DiktyoV1alpha1 retrieves the DiktyoV1alpha1Client
-func (c *Clientset) DiktyoV1alpha1() diktyov1alpha1.DiktyoV1alpha1Interface {
-	return &fakediktyov1alpha1.FakeDiktyoV1alpha1{Fake: &c.Fake}
+// NetworktopologyV1alpha1 retrieves the NetworktopologyV1alpha1Client
+func (c *Clientset) NetworktopologyV1alpha1() networktopologyv1alpha1.NetworktopologyV1alpha1Interface {
+	return &fakenetworktopologyv1alpha1.FakeNetworktopologyV1alpha1{Fake: &c.Fake}
 }

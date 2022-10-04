@@ -8,9 +8,9 @@ metadata:
     api-approved.kubernetes.io: "To be Defined" # edited manually
     controller-gen.kubebuilder.io/version: v0.6.2
   creationTimestamp: null
-  name: networktopologies.diktyo.k8s.io
+  name: networktopologies.networktopology.diktyo.k8s.io
 spec:
-  group: diktyo.k8s.io
+  group: networktopology.diktyo.k8s.io
   names:
     kind: NetworkTopology
     listKind: NetworkTopologyList

@@ -59,7 +59,7 @@ type networkTopologies struct {
 }
 
 // newNetworkTopologies returns a NetworkTopologies
-func newNetworkTopologies(c *DiktyoV1alpha1Client, namespace string) *networkTopologies {
+func newNetworkTopologies(c *NetworktopologyV1alpha1Client, namespace string) *networkTopologies {
 	return &networkTopologies{
 		client: c.RESTClient(),
 		ns:     namespace,

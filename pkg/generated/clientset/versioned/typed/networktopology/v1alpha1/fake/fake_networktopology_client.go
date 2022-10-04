@@ -26,17 +26,17 @@ import (
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeDiktyoV1alpha1 struct {
+type FakeNetworktopologyV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeDiktyoV1alpha1) NetworkTopologies(namespace string) v1alpha1.NetworkTopologyInterface {
+func (c *FakeNetworktopologyV1alpha1) NetworkTopologies(namespace string) v1alpha1.NetworkTopologyInterface {
 	return &FakeNetworkTopologies{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeDiktyoV1alpha1) RESTClient() rest.Interface {
+func (c *FakeNetworktopologyV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }
