@@ -24,7 +24,7 @@ const (
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:scope=Cluster,shortName=nt
+// +kubebuilder:resource:scope=Namespaced,shortName=nt
 
 // NetworkTopology defines network costs in the cluster between regions and zones
 type NetworkTopology struct {
@@ -126,7 +126,6 @@ type CostInfo struct {
 	// Network Cost between origin and destination (e.g., Dijkstra shortest path, etc)
 	NetworkCost int64 `json:"networkCost,omitempty" protobuf:"bytes,4,opt,name=networkCost"`
 }
-
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
