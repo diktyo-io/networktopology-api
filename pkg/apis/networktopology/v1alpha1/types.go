@@ -34,8 +34,7 @@ type NetworkTopology struct {
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
-	// NetworkTopologySpec defines the Min and Max for Quota.
-	// +optional
+	// NetworkTopologySpec defines the zones and regions of the cluster.
 	Spec NetworkTopologySpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 
 	// NetworkTopologyStatus defines the observed use.

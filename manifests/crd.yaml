@@ -1,6 +1,5 @@
 
 ---
-# Network CRD spec
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -15,16 +14,16 @@ spec:
     kind: NetworkTopology
     listKind: NetworkTopologyList
     plural: networktopologies
-    singular: networktopology
     shortNames:
       - nt
-      - nts
+    singular: networktopology
   scope: Namespaced
   versions:
     - name: v1alpha1
       schema:
         openAPIV3Schema:
-          description: Network Topology describes the cluster network topology.
+          description: NetworkTopology defines network costs in the cluster between
+            regions and zones
           properties:
             apiVersion:
               description: 'APIVersion defines the versioned schema of this representation
@@ -39,96 +38,109 @@ spec:
             metadata:
               type: object
             spec:
-              description: NetworkTopology defines the zones and regions of the cluster.
+              description: NetworkTopologySpec defines the zones and regions of the cluster.
               properties:
+                configmapName:
+                  description: ConfigmapName to be used for cost calculation
+                  type: string
                 weights:
-                  description: The weights of the cluster (WeightList)
+                  description: The manual defined weights of the cluster
                   items:
-                    description: WeightInfo contains information about weights of a given algorithm.
+                    description: WeightInfo contains information about all network costs
+                      for a given algorithm.
                     properties:
                       name:
+                        description: Algorithm Name for network cost calculation (e.g.,
+                          userDefined)
                         type: string
-                        description: Algorithm Name (e.g., UserDefined)
                       topologyList:
-                        description: Define weights based on a given topologyKey (TopologyList)
+                        description: TopologyList owns Costs between origins
                         items:
-                          description: TopologyInfo contains information about one region.
+                          description: TopologyInfo contains information about network
+                            costs for a particular Topology Key.
                           properties:
-                            topologyKey:
-                              type: string
-                              description: Topology Key (e.g., "topology.kubernetes.io/region", "topology.kubernetes.io/zone")
                             originList:
-                              description: OriginList contains an array of OriginInfo objects (OriginList).
+                              description: OriginList for a particular origin.
                               items:
-                                description: OriginInfo contains information about one origin.
+                                description: OriginInfo contains information about network
+                                  costs for a particular Origin.
                                 properties:
-                                  origin:
-                                    type: string
-                                    description: Region Name (Origin)
                                   costList:
-                                    description: CostList contains an array of CostInfo objects.
+                                    description: Costs for the particular origin.
                                     items:
-                                      description: CostInfo contains information about one region.
+                                      description: CostInfo contains information about
+                                        network costs.
                                       properties:
-                                        destination:
-                                          type: string
-                                          description: Region name (Destination)
-                                        bandwidthCapacity:
-                                          anyOf:
-                                          - type: integer
-                                          - type: string
-                                          description: Bandwidth Capacity between Origin and Destination.
-                                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
-                                          x-kubernetes-int-or-string: true
                                         bandwidthAllocated:
                                           anyOf:
-                                          - type: integer
-                                          - type: string
-                                          description: Bandwidth allocated between Origin and Destination.
+                                            - type: integer
+                                            - type: string
+                                          description: Bandwidth allocated between origin
+                                            and destination.
                                           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                                           x-kubernetes-int-or-string: true
+                                        bandwidthCapacity:
+                                          anyOf:
+                                            - type: integer
+                                            - type: string
+                                          description: Bandwidth capacity between origin
+                                            and destination.
+                                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                          x-kubernetes-int-or-string: true
+                                        destination:
+                                          description: Name of the destination (e.g.,
+                                            Region Name, Zone Name).
+                                          type: string
                                         networkCost:
+                                          description: Network Cost between origin and
+                                            destination (e.g., Dijkstra shortest path,
+                                            etc)
                                           type: integer
                                           default: 0
                                           minimum: 0
                                           format: int64
-                                          description: Cost from Origin to Destination
                                       required:
-                                      - destination
-                                      - networkCost
+                                        - destination
+                                        - networkCost
                                       type: object
                                     type: array
+                                  origin:
+                                    description: Name of the origin (e.g., Region Name,
+                                      Zone Name).
+                                    type: string
                                 required:
-                                - origin
+                                  - origin
                                 type: object
                               type: array
+                            topologyKey:
+                              description: Topology key (e.g., "topology.kubernetes.io/region",
+                                "topology.kubernetes.io/zone").
+                              type: string
                           required:
-                          - topologyKey
-                          - originList
+                            - topologyKey
+                            - originList
                           type: object
                         type: array
                     required:
-                    - name
-                    - topologyList
+                      - name
+                      - topologyList
                     type: object
                   type: array
-                configmapName:
-                  description: ConfigmapName to be used for cost calculation
-                  type: string
               required:
-              - weights
-              - configmapName
+                - weights
+                - configmapName
               type: object
             status:
-              description: Record nodeCount and weight calculation time.
+              description: NetworkTopologyStatus defines the observed use.
               properties:
                 nodeCount:
-                  description: The number of nodes in the cluster.
+                  description: The total number of nodes in the cluster
                   format: int64
                   type: integer
                   minimum: 0
                 weightCalculationTime:
-                  description: weightCalculationTime for calculated weights
+                  description: The calculation time for the weights in the network topology
+                    CRD
                   format: date-time
                   type: string
               type: object
