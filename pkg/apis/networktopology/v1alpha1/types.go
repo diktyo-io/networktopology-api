@@ -35,6 +35,7 @@ type NetworkTopology struct {
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
 	// NetworkTopologySpec defines the zones and regions of the cluster.
+	// +optional
 	Spec NetworkTopologySpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 
 	// NetworkTopologyStatus defines the observed use.
@@ -46,16 +47,19 @@ type NetworkTopology struct {
 // +protobuf=true
 type NetworkTopologySpec struct {
 	// The manual defined weights of the cluster
-	Weights WeightList `json:"weights,omitempty" protobuf:"bytes,1,opt,name=weights,casttype=WeightList"`
+	// +required
+	Weights WeightList `json:"weights" protobuf:"bytes,1,opt,name=weights,casttype=WeightList"`
 
 	// ConfigmapName to be used for cost calculation
-	ConfigmapName string `json:"configmapName,omitempty" protobuf:"bytes,2,opt,name=configmapName"`
+	// +required
+	ConfigmapName string `json:"configmapName" protobuf:"bytes,2,opt,name=configmapName"`
 }
 
 // NetworkTopologyStatus represents the current state of a Network Topology.
 // +protobuf=true
 type NetworkTopologyStatus struct {
 	// The total number of nodes in the cluster
+	// +kubebuilder:validation:Minimum=0
 	NodeCount int64 `json:"nodeCount,omitempty" protobuf:"bytes,1,opt,name=nodeCount"`
 
 	// The calculation time for the weights in the network topology CRD
@@ -74,20 +78,24 @@ type TopologyList []TopologyInfo
 // +protobuf=true
 type WeightInfo struct {
 	// Algorithm Name for network cost calculation (e.g., userDefined)
-	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+	// +required
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
 	// TopologyList owns Costs between origins
-	TopologyList TopologyList `json:"topologyList,omitempty" protobuf:"bytes,2,opt,name=topologyList,casttype=TopologyList"`
+	// +required
+	TopologyList TopologyList `json:"topologyList" protobuf:"bytes,2,opt,name=topologyList,casttype=TopologyList"`
 }
 
 // TopologyInfo contains information about network costs for a particular Topology Key.
 // +protobuf=true
 type TopologyInfo struct {
 	// Topology key (e.g., "topology.kubernetes.io/region", "topology.kubernetes.io/zone").
-	TopologyKey TopologyKey `json:"topologyKey,omitempty" protobuf:"bytes,1,opt,name=topologyKey"` // add as enum instead of string
+	// +required
+	TopologyKey TopologyKey `json:"topologyKey" protobuf:"bytes,1,opt,name=topologyKey"` // add as enum instead of string
 
 	// OriginList for a particular origin.
-	OriginList OriginList `json:"originList,omitempty" protobuf:"bytes,2,rep,name=originList,casttype=OriginList"`
+	// +required
+	OriginList OriginList `json:"originList" protobuf:"bytes,2,rep,name=originList,casttype=OriginList"`
 }
 
 // OriginList contains an array of OriginInfo objects.
@@ -98,7 +106,8 @@ type OriginList []OriginInfo
 // +protobuf=true
 type OriginInfo struct {
 	// Name of the origin (e.g., Region Name, Zone Name).
-	Origin string `json:"origin,omitempty" protobuf:"bytes,1,opt,name=origin"`
+	// +required
+	Origin string `json:"origin" protobuf:"bytes,1,opt,name=origin"`
 
 	// Costs for the particular origin.
 	CostList CostList `json:"costList,omitempty" protobuf:"bytes,2,rep,name=costList,casttype=CostList"`
@@ -112,7 +121,8 @@ type CostList []CostInfo
 // +protobuf=true
 type CostInfo struct {
 	// Name of the destination (e.g., Region Name, Zone Name).
-	Destination string `json:"destination,omitempty" protobuf:"bytes,1,opt,name=destination"`
+	// +required
+	Destination string `json:"destination" protobuf:"bytes,1,opt,name=destination"`
 
 	// Bandwidth capacity between origin and destination.
 	// +optional
@@ -123,7 +133,10 @@ type CostInfo struct {
 	BandwidthAllocated resource.Quantity `json:"bandwidthAllocated,omitempty" protobuf:"bytes,3,opt,name=bandwidthAllocated"`
 
 	// Network Cost between origin and destination (e.g., Dijkstra shortest path, etc)
-	NetworkCost int64 `json:"networkCost,omitempty" protobuf:"bytes,4,opt,name=networkCost"`
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Default=0
+	// +required
+	NetworkCost int64 `json:"networkCost" protobuf:"bytes,4,opt,name=networkCost"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
