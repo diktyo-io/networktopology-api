@@ -1,5 +1,5 @@
 /*
-Copyright 2022 The Kubernetes Authors.
+Copyright 2023 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -38,9 +38,9 @@ type FakeNetworkTopologies struct {
 	ns   string
 }
 
-var networktopologiesResource = schema.GroupVersionResource{Group: "networktopology.diktyo.k8s.io", Version: "v1alpha1", Resource: "networktopologies"}
+var networktopologiesResource = schema.GroupVersionResource{Group: "networktopology.diktyo.x-k8s.io", Version: "v1alpha1", Resource: "networktopologies"}
 
-var networktopologiesKind = schema.GroupVersionKind{Group: "networktopology.diktyo.k8s.io", Version: "v1alpha1", Kind: "NetworkTopology"}
+var networktopologiesKind = schema.GroupVersionKind{Group: "networktopology.diktyo.x-k8s.io", Version: "v1alpha1", Kind: "NetworkTopology"}
 
 // Get takes name of the networkTopology, and returns the corresponding networkTopology object, and an error if there is any.
 func (c *FakeNetworkTopologies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkTopology, err error) {
