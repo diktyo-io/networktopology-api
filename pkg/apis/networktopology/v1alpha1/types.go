@@ -113,13 +113,13 @@ type OriginInfo struct {
 	Origin string `json:"origin" protobuf:"bytes,1,opt,name=origin"`
 
 	// +optional
-	MinCost string `json:"minCost" protobuf:"bytes,2,opt,name=minCost"`
+	MinCost int64 `json:"minCost" protobuf:"bytes,2,opt,name=minCost"`
 
 	// +optional
-	AvgCost string `json:"avgCost" protobuf:"bytes,3,opt,name=avgCost"`
+	AvgCost int64 `json:"avgCost" protobuf:"bytes,3,opt,name=avgCost"`
 
 	// +optional
-	MaxCost string `json:"maxCost" protobuf:"bytes,4,opt,name=maxCost"`
+	MaxCost int64 `json:"maxCost" protobuf:"bytes,4,opt,name=maxCost"`
 
 	// Costs for the particular origin.
 	CostList CostList `json:"costList,omitempty" protobuf:"bytes,5,rep,name=costList,casttype=CostList"`
