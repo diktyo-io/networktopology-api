@@ -18,6 +18,9 @@ const (
 	// NetworkTopologyRegion corresponds to "topology.kubernetes.io/zone"
 	NetworkTopologyZone TopologyKey = v1.LabelTopologyZone
 
+	// NetworkTopologySegment corresponds to "topology.kubernetes.io/segment"
+	NetworkTopologySegment TopologyKey = "topology.kubernetes.io/segment"
+
 	// NetworkTopologyNetperfCosts corresponds to costs defined with measurements via the Netperf Component: "NetperfCosts"
 	NetworkTopologyNetperfCosts string = "NetperfCosts"
 )
@@ -109,8 +112,17 @@ type OriginInfo struct {
 	// +required
 	Origin string `json:"origin" protobuf:"bytes,1,opt,name=origin"`
 
+	// +optional
+	MinCost string `json:"minCost" protobuf:"bytes,2,opt,name=minCost"`
+
+	// +optional
+	AvgCost string `json:"avgCost" protobuf:"bytes,3,opt,name=avgCost"`
+
+	// +optional
+	MaxCost string `json:"maxCost" protobuf:"bytes,4,opt,name=maxCost"`
+
 	// Costs for the particular origin.
-	CostList CostList `json:"costList,omitempty" protobuf:"bytes,2,rep,name=costList,casttype=CostList"`
+	CostList CostList `json:"costList,omitempty" protobuf:"bytes,5,rep,name=costList,casttype=CostList"`
 }
 
 // CostList contains an array of CostInfo objects.
@@ -124,19 +136,23 @@ type CostInfo struct {
 	// +required
 	Destination string `json:"destination" protobuf:"bytes,1,opt,name=destination"`
 
+	// If the communication between origin and destination is allowed.
+	// +optional
+	IsAllowed bool `json:"isAllowed,omitempty" protobuf:"bytes,2,opt,name=isAllowed"`
+
 	// Bandwidth capacity between origin and destination.
 	// +optional
-	BandwidthCapacity resource.Quantity `json:"bandwidthCapacity,omitempty" protobuf:"bytes,2,opt,name=bandwidthCapacity"`
+	BandwidthCapacity resource.Quantity `json:"bandwidthCapacity,omitempty" protobuf:"bytes,3,opt,name=bandwidthCapacity"`
 
 	// Bandwidth allocated between origin and destination.
 	// +optional
-	BandwidthAllocated resource.Quantity `json:"bandwidthAllocated,omitempty" protobuf:"bytes,3,opt,name=bandwidthAllocated"`
+	BandwidthAllocated resource.Quantity `json:"bandwidthAllocated,omitempty" protobuf:"bytes,4,opt,name=bandwidthAllocated"`
 
 	// Network Cost between origin and destination (e.g., Dijkstra shortest path, etc)
 	// +kubebuilder:validation:Minimum=0
 	// +kubebuilder:validation:Default=0
 	// +required
-	NetworkCost int64 `json:"networkCost" protobuf:"bytes,4,opt,name=networkCost"`
+	NetworkCost int64 `json:"networkCost" protobuf:"bytes,5,opt,name=networkCost"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
