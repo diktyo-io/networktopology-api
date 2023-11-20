@@ -113,16 +113,41 @@ type OriginInfo struct {
 	Origin string `json:"origin" protobuf:"bytes,1,opt,name=origin"`
 
 	// +optional
-	MinCost int64 `json:"minCost" protobuf:"bytes,2,opt,name=minCost"`
+	OriginInterStatistics NetworkTopologyStatistics `json:"originInterStatistics,omitempty" protobuf:"bytes,2,opt,name=originInterStatistics, casttype=NetworkTopologyStatistics"`
 
 	// +optional
-	AvgCost int64 `json:"avgCost" protobuf:"bytes,3,opt,name=avgCost"`
-
-	// +optional
-	MaxCost int64 `json:"maxCost" protobuf:"bytes,4,opt,name=maxCost"`
+	OriginIntraStatistics NetworkTopologyStatistics `json:"originIntraStatistics,omitempty" protobuf:"bytes,2,opt,name=originIntraStatistics, casttype=NetworkTopologyStatistics"`
 
 	// Costs for the particular origin.
 	CostList CostList `json:"costList,omitempty" protobuf:"bytes,5,rep,name=costList,casttype=CostList"`
+}
+
+// NetworkTopologyStatistics represents the bandwidth and cost statistics of the origin.
+// +protobuf=true
+type NetworkTopologyStatistics struct {
+	// MinBandwidth
+	// +optional
+	MinBandwidth resource.Quantity `json:"minBandwidth,omitempty" protobuf:"bytes,1,opt,name=minBandwidth"`
+
+	// AvgBandwidth
+	// +optional
+	AvgBandwidth resource.Quantity `json:"avgBandwidth,omitempty" protobuf:"bytes,2,opt,name=avgBandwidth"`
+
+	// MaxBandwidth
+	// +optional
+	MaxBandwidth resource.Quantity `json:"maxBandwidth,omitempty" protobuf:"bytes,3,opt,name=maxBandwidth"`
+
+	// MinBandwidth
+	// +optional
+	MinCost int64 `json:"minCost,omitempty" protobuf:"bytes,4,opt,name=minCost"`
+
+	// AvgCost
+	// +optional
+	AvgCost int64 `json:"avgCost,omitempty" protobuf:"bytes,5,opt,name=avgCost"`
+
+	// MaxCost
+	// +optional
+	MaxCost int64 `json:"maxCost,omitempty" protobuf:"bytes,6,opt,name=maxCost"`
 }
 
 // CostList contains an array of CostInfo objects.
